@@ -26,8 +26,9 @@ class SharedPreferences {
   /// performance-sensitive blocks.
   static Future<SharedPreferences> getInstance() async {
     if (_completer == null) {
-      final Completer<SharedPreferences> completer =
-          Completer<SharedPreferences>();
+      final Completer<SharedPreferences> completer;
+      _completer = completer = Completer<SharedPreferences>();
+
       try {
         final Map<String, Object> preferencesMap =
             await _getSharedPreferencesMap();
@@ -40,7 +41,6 @@ class SharedPreferences {
         _completer = null;
         return sharedPrefsFuture;
       }
-      _completer = completer;
     }
     return _completer!.future;
   }
